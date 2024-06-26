@@ -18,7 +18,7 @@ auth_response <-
   req_body_json(list(
     "grant_type"="password",
     "username"="university-of-bristol-api-user",
-    "password"="hroCp542e`3`"
+    "password"="<put-UoB-password-here>"
   )) %>% 
   # Add headers
   req_headers(
