@@ -8,3 +8,4 @@
 # Run app.R to launch dashboard
 # Edit IconKey.png to update key
 # Edit FetchLuftdatenData to add in more SensorCommunity sensors
+# To access traffic data please apply to Telraam for a token and to Nikolai Bode for the UoB password.
