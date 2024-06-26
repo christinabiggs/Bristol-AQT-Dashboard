@@ -40,7 +40,7 @@ request <- POST(
   "https://telraam-api.net/v1/reports/traffic_snapshot",
   body = request_body_json,
   add_headers(
-    "X-Api-Key"="z7jmplxRiu2679NE5Xcg44ZPPsmA10Ie8xwFuCvp"
+    "X-Api-Key"="<put-API-token-here>"
   ),
   verbose()
 )
