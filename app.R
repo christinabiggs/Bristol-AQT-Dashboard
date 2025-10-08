@@ -9,7 +9,6 @@ source('Librarysetup.R')
 source('FetchFromTelraam.R')
 source('FetchDEFRA.R')
 source('FetchLuftdatenData.R')
-source('FetchVivaCityData.R')
 
 
 # Based on input coordinates 
@@ -35,8 +34,8 @@ ui = fluidPage(
       selectInput("dataset", "Choose a sensor type for data download:",
                   c("DEFRA sensor list","DEFRA data download",
                   "SensorCommunity sensor list","SensorCommunity data download",
-                  "Telraam sensor list","Telraam data download",
-                  "UoBristol sensor list","UoBristol data download")),
+                  "Telraam sensor list","Telraam data download")
+      ),
 
     # Button for data download
       downloadButton("downloadData", "Download"),
@@ -48,7 +47,7 @@ ui = fluidPage(
       card_image(file="IconKey.png"),
       card_footer(class="text-info","This dashboard was created by Dr Christina Biggs with
                   funding from the Jean Golding Institute, Bristol.
-                  For further information contact Dr James Matthews, Dr Nikolai Bode or Dr Anwar Khan,
+                  For further information contact Dr Nikolai Bode or Dr Anwar Khan,
                   University of Bristol")
       )
    
@@ -79,13 +78,6 @@ server <- function(input, output, session) {
     get_id <- luft_sensorlist$sensor_id[i]
     p_luft[[i]] <- PickGraphFromLuftdaten(luft_yesterday,DEFRA_yesterday,get_id)
   })
-  
-  p_vivacity <- as.list(NULL)
-  print("Fetching Vivacity graphs for yesterday")
-  p_vivacity <- lapply(1:nrow(vivacity_sensorlist), function(i) {
-    get_id <- vivacity_sensorlist$sensor_id[i]
-    p_vivacity[[i]] <- PickGraphFromVivaCity(vivacity_yesterday,get_id)
-  })
  
   p_DEFRA <- as.list(NULL)
   print("Fetching DEFRA graphs for yesterday")
@@ -106,7 +98,6 @@ server <- function(input, output, session) {
       addTiles() %>%
       addMapPane("SensorComm",zIndex = 410)  %>%
       addMapPane("telraam",zIndex = 412) %>%
-      addMapPane("vivacity",zIndex = 414) %>%
       addMapPane("DEFRA",zIndex = 416) %>%
       addAwesomeMarkers(
         data = luft_sensorlist,
@@ -135,19 +126,7 @@ server <- function(input, output, session) {
         options = markerOptions(opacity=ifelse(!input$showdormantsensors&
                   is.na(telraam_sensorlist$yday_cars),0,1)),
         popup = popupGraph(p_telraam, type = "svg")) %>% 
-      addAwesomeMarkers(
-        data = vivacity_sensorlist,
-        lng = vivacity_sensorlist$lon,
-        lat = vivacity_sensorlist$lat,
-        icon = awesomeIcons(
-                icon="car", library="fa", iconColor = "white",
-                markerColor = ifelse(!is.na(vivacity_sensorlist$yday_cars),
-                  "lightgreen","lightgray"),squareMarker = TRUE,
-                text=as.integer(vivacity_sensorlist$yday_cars)),
-        options = markerOptions(opacity=ifelse(!input$showdormantsensors&
-                   is.na(vivacity_sensorlist$yday_cars),0,1)),
-       popup = popupGraph(p_vivacity, type = "svg"))  %>%
-      addAwesomeMarkers(
+        addAwesomeMarkers(
         data = DEFRA_sensorlist,
         lng = DEFRA_sensorlist$longitude,
         lat = DEFRA_sensorlist$latitude,
@@ -169,10 +148,7 @@ server <- function(input, output, session) {
              FetchCountsFromLuftdaten(input$dateRange[[1]],input$dateRange[[2]]),
            "Telraam sensor list" = telraam_sensorlist,
            "Telraam data download" = FetchCountsFromTelraam(input$dateRange[[1]],
-                                                          input$dateRange[[2]]),
-           "UoBristol sensor list" = vivacity_sensorlist,
-           "UoBristol data download" = FetchCountsFromVivaCity(input$dateRange[[1]],
-                                                             input$dateRange[[2]]))
+                                                          input$dateRange[[2]]))
   })
   
   # Table of selected dataset ----
