@@ -36,14 +36,9 @@ request_body <- list(
 
 request_body_json <- toJSON(request_body, auto_unbox=TRUE)
 
-request <- POST(
-  "https://telraam-api.net/v1/reports/traffic_snapshot",
-  body = request_body_json,
-  add_headers(
-    "X-Api-Key"= api_Telraam,
-  ),
-  verbose()
-)
+url <- "https://telraam-api.net/v1/reports/traffic_snapshot_live"
+
+x <- GET(url, authenticate(password = api_Telraam))
 
 telraam_geojson  <- content(request, as="text", encoding="UTF-8")
 telraam_sf <- geojson_sf(telraam_geojson)

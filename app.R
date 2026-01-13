@@ -6,7 +6,6 @@
 
 source('~/repositories/Bristol-AQT-Dashboard/apikeys/APIkeys.R')
 source('Librarysetup.R')
-source('FetchFromTelraam.R')
 source('FetchDEFRA.R')
 source('FetchLuftdatenData.R')
 
@@ -86,13 +85,6 @@ server <- function(input, output, session) {
     p_DEFRA[[i]] <- PickGraphFromDEFRA(DEFRA_yesterday,get_id)
   })
   
-  p_telraam <- as.list(NULL)
-  print("Fetching Telraam graphs for yesterday")
-  p_telraam <- lapply(1:nrow(telraam_sf), function(i) {    
-    get_id <- telraam_sf$sensor_id[i]
-    p_telraam[[i]] <- PickGraphFromTelraam(telraam_yesterday,get_id)
-  })
-  
   output$map = renderLeaflet({
     leaflet() %>%
       addTiles() %>%
@@ -108,25 +100,7 @@ server <- function(input, output, session) {
         lat = luft_sensorlist$lat,
         options = pathOptions(pane = "SensorComm"),
         popup = popupGraph(p_luft, type = "svg"))  %>%
-       addPolygons(
-        data = telraam_sf, 
-        fillColor = "pink",
-        color = ifelse(telraam_sf$car>0,"pink","darkred"), 
-        options = pathOptions(pane = "telraam"),
-        popup = popupGraph(p_telraam, type = "svg")) %>%
        addAwesomeMarkers(
-        data = telraam_sensorlist,
-        lat = telraam_sensorlist$lat,
-        lng = telraam_sensorlist$long,        
-        icon = awesomeIcons(
-          icon = "car", library="fa",iconColor = "white",
-          markerColor = ifelse(!is.na(telraam_sensorlist$yday_cars),
-                "pink","lightgray"),squareMarker = TRUE,
-             text=as.integer(telraam_sensorlist$yday_cars)),
-        options = markerOptions(opacity=ifelse(!input$showdormantsensors&
-                  is.na(telraam_sensorlist$yday_cars),0,1)),
-        popup = popupGraph(p_telraam, type = "svg")) %>% 
-        addAwesomeMarkers(
         data = DEFRA_sensorlist,
         lng = DEFRA_sensorlist$longitude,
         lat = DEFRA_sensorlist$latitude,
@@ -145,10 +119,7 @@ server <- function(input, output, session) {
                                                       input$dateRange[[2]]),
            "SensorCommunity sensor list" = luft_sensorlist,
            "SensorCommunity data download" = 
-             FetchCountsFromLuftdaten(input$dateRange[[1]],input$dateRange[[2]]),
-           "Telraam sensor list" = telraam_sensorlist,
-           "Telraam data download" = FetchCountsFromTelraam(input$dateRange[[1]],
-                                                          input$dateRange[[2]]))
+             FetchCountsFromLuftdaten(input$dateRange[[1]],input$dateRange[[2]]))
   })
   
   # Table of selected dataset ----
