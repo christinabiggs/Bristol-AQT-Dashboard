@@ -1,4 +1,4 @@
-# Bristol Air Quality and Traffic Dashboard
+# Bristol Air Quality Dashboard
 # Shiny Map with Popup graphs, date choice and download facility
 # Created by Christina Biggs
 # With funding from the Jean Golding Institute, University of Bristol
@@ -20,7 +20,7 @@ ui = fluidPage(
     # Sidebar panel for inputs ----
     sidebarPanel(
       
-      titlePanel("Bristol Air Quality and Traffic (AQT) Dashboard"),
+      titlePanel("Bristol Air Quality Dashboard"),
   
       dateRangeInput('dateRange',
                    label = 'Select date range for data download: for one day\'s data 
