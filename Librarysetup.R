@@ -4,7 +4,7 @@
 
 
 list.of.packages <- c("lubridate","tidyverse","RCurl","httr","httr2","readr","stringi","ggplot2",
-                      "jsonlite","geojsonsf","geojsonio","rsconnect",
+                      "jsonlite","geojsonsf","rsconnect",
                       "data.table","shiny","sf", "spData","lattice",
                       "leafpop","leaflet","units","plyr","dplyr","stringr","htmltools")
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
@@ -15,7 +15,6 @@ library(base)
 library(rsconnect)
 library(jsonlite)
 library(geojsonsf)
-library(geojsonio)
 library(lubridate)
 library(tidyverse)
 library(RCurl)
@@ -29,7 +28,6 @@ library(shiny)
 library(shinydashboard)
 library(plotly)
 library(bslib)
-library(sf)
 library(spData)
 library(leaflet)
 library(units)
