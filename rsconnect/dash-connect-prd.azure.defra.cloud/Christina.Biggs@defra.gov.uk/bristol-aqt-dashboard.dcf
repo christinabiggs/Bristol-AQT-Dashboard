@@ -1,0 +1,12 @@
+name: bristol-aqt-dashboard
+title: Bristol-AQT-Dashboard
+username: Christina.Biggs@defra.gov.uk
+account: Christina.Biggs@defra.gov.uk
+server: dash-connect-prd.azure.defra.cloud
+hostUrl: https://dash-connect-prd.azure.defra.cloud/__api__
+appId: 350
+bundleId: 1214
+url: https://dash-connect-prd.azure.defra.cloud/content/1083d099-1063-498e-b9a1-730e91e146e3/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE
